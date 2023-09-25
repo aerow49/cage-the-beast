@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://c6r82ixvtj1jx"]
+
+[ext_resource type="Script" path="res://maps/level.gd" id="1_sv1t4"]
+[ext_resource type="PackedScene" uid="uid://dgpjxoygnvyy4" path="res://assets/simple_fpsplayer/Player.tscn" id="2_iul4h"]
+[ext_resource type="PackedScene" uid="uid://c8woap06hasc7" path="res://maps/results_screen.tscn" id="4_e2747"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nn6nm"]
+
+[sub_resource type="Sky" id="Sky_0bvrk"]
+sky_material = SubResource("ProceduralSkyMaterial_nn6nm")
+
+[sub_resource type="Environment" id="Environment_2tkna"]
+background_mode = 2
+sky = SubResource("Sky_0bvrk")
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_jy5gv"]
+cell_height = 0.01
+agent_max_climb = 0.0
+
+[node name="Base" type="Node3D" node_paths=PackedStringArray("player")]
+script = ExtResource("1_sv1t4")
+player = NodePath("Player")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-3.09086e-08, -0.707107, 0.707107, -3.09086e-08, 0.707107, 0.707107, -1, 0, -4.37114e-08, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2tkna")
+
+[node name="Player" parent="." instance=ExtResource("2_iul4h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_jy5gv")
+
+[node name="ResultsScreen" parent="." instance=ExtResource("4_e2747")]
+visible = false
+
+[connection signal="visibility_changed" from="ResultsScreen" to="Player" method="_on_results_screen_visibility_changed"]

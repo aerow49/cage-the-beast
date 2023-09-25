@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://h1goih8et71n"]
+
+[ext_resource type="PackedScene" uid="uid://cgu3q5n0nkcda" path="res://assets/Giant.glb" id="1_2dckn"]
+[ext_resource type="Script" path="res://components/giant.gd" id="1_3tel2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_peil7"]
+radius = 0.804429
+height = 4.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vasm"]
+radius = 2.5
+height = 6.0
+
+[node name="giant" type="CharacterBody3D" groups=["beast"]]
+script = ExtResource("1_3tel2")
+speed = 10.0
+
+[node name="Giant" parent="." instance=ExtResource("1_2dckn")]
+
+[node name="Skeleton3D" parent="Giant/RootNode/EnemyArmature" index="0"]
+bones/7/position = Vector3(0, 0.0140334, 1.27985e-11)
+bones/7/rotation = Quaternion(-0.0862938, 1.18765e-07, 1.0287e-08, 0.99627)
+bones/8/position = Vector3(-2.13019e-09, 0.0149478, 0.00883456)
+bones/8/rotation = Quaternion(-0.0484742, -1.19069e-07, -5.77858e-09, 0.998824)
+bones/11/position = Vector3(0.00893871, 0.0158425, 6.65788e-05)
+bones/11/rotation = Quaternion(0.0884974, 0.95268, 0.289562, -0.0268989)
+bones/14/position = Vector3(-0.00893871, 0.0159744, 0.000158693)
+bones/14/rotation = Quaternion(-0.0884435, 0.958452, 0.270024, 0.0251731)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("CapsuleShape3D_peil7")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("CapsuleShape3D_3vasm")
+
+[node name="bonkTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="attackTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="bonkTimer" to="." method="_on_bonk_timer_timeout"]
+[connection signal="timeout" from="attackTimer" to="." method="_on_attack_timer_timeout"]
+
+[editable path="Giant"]

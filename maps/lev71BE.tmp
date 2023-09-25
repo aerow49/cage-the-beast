@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctf7p6unspo8v"]
+
+[ext_resource type="PackedScene" uid="uid://c6r82ixvtj1jx" path="res://maps/base_level.tscn" id="1_d4jjk"]
+[ext_resource type="PackedScene" uid="uid://cudjdcnw8wh4" path="res://components/button.tscn" id="2_gut37"]
+[ext_resource type="PackedScene" uid="uid://d0sklroc2367w" path="res://components/cage.tscn" id="3_i5vo2"]
+[ext_resource type="PackedScene" uid="uid://h1goih8et71n" path="res://components/giant.tscn" id="4_ktonu"]
+
+[node name="Base" instance=ExtResource("1_d4jjk")]
+
+[node name="button" parent="." index="4" node_paths=PackedStringArray("triggerObject") instance=ExtResource("2_gut37")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.621791, -0.25, -3.05377)
+triggerObject = NodePath("../cage")
+
+[node name="cage" parent="." index="5" instance=ExtResource("3_i5vo2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13.4932)
+
+[node name="giant" parent="." index="6" node_paths=PackedStringArray("player") instance=ExtResource("4_ktonu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -39.5197)
+player = NodePath("../Player")

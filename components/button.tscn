@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3 uid="uid://cudjdcnw8wh4"]
+
+[ext_resource type="Script" path="res://components/button.gd" id="1_01jpq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_000c8"]
+size = Vector3(1, 0.233144, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_643dw"]
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fet14"]
+albedo_color = Color(0.666667, 0.584314, 0.423529, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_73wf6"]
+size = Vector3(1.1, 0.1, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1w6o"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_pnwko"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pressButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.150776, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0vnvn"]
+resource_name = "press"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pressButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.150776, 0), Vector3(0, -0.199, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_781oi"]
+_data = {
+"RESET": SubResource("Animation_pnwko"),
+"press": SubResource("Animation_0vnvn")
+}
+
+[node name="button" type="Area3D" groups=["cageButton"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+script = ExtResource("1_01jpq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0577616, 0)
+shape = SubResource("BoxShape3D_000c8")
+
+[node name="pressButton" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.150776, 0)
+mesh = SubResource("CylinderMesh_643dw")
+surface_material_override/0 = SubResource("StandardMaterial3D_fet14")
+
+[node name="plate" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_73wf6")
+surface_material_override/0 = SubResource("StandardMaterial3D_g1w6o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_781oi")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

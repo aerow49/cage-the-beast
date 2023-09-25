@@ -1,0 +1,97 @@
+[gd_scene load_steps=7 format=3 uid="uid://d0sklroc2367w"]
+
+[ext_resource type="Script" path="res://components/cage.gd" id="1_qb3qb"]
+[ext_resource type="PackedScene" uid="uid://dn23seik6r3jd" path="res://assets/cage_asset.tscn" id="2_rnkgj"]
+
+[sub_resource type="Animation" id="Animation_64p0b"]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("cage_node:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -4.8, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("cage_node/Cage/RootNode/torture_device_011/StaticBody3D/CollisionShape3D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_ov04v"]
+resource_name = "capture"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("cage_node:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -4.8, 0), Vector3(0, -0.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("cage_node/Cage/RootNode/torture_device_011/StaticBody3D/CollisionShape3D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nq5y0"]
+_data = {
+"RESET": SubResource("Animation_64p0b"),
+"capture": SubResource("Animation_ov04v")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qavgf"]
+size = Vector3(0.5, 1.5, 0.5)
+
+[node name="cage" type="Node3D" groups=["cage"]]
+script = ExtResource("1_qb3qb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nq5y0")
+}
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+
+[node name="cage_node" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.8, 0)
+
+[node name="Cage" parent="cage_node" instance=ExtResource("2_rnkgj")]
+
+[node name="CollisionShape3D" parent="cage_node/Cage/RootNode/torture_device_011/StaticBody3D" index="0"]
+disabled = true
+
+[node name="Area3D" type="Area3D" parent="cage_node"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.211679, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="cage_node/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.281225, 0)
+shape = SubResource("BoxShape3D_qavgf")
+
+[connection signal="body_entered" from="cage_node/Area3D" to="." method="_on_area_3d_body_entered"]
+
+[editable path="cage_node/Cage"]

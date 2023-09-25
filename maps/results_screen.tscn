@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8woap06hasc7"]
+
+[ext_resource type="Theme" uid="uid://0nq4ksihkspk" path="res://components/ui_theme.tres" id="1_jef3o"]
+[ext_resource type="Script" path="res://maps/results_screen.gd" id="2_n3es1"]
+
+[node name="ResultsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_jef3o")
+script = ExtResource("2_n3es1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "TEST"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="nextLevel" type="Button" parent="VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Next"
+flat = true
+
+[node name="mainMenu" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Quit"
+flat = true
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/nextLevel" to="." method="_on_next_level_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/mainMenu" to="." method="_on_main_menu_pressed"]
